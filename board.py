@@ -32,8 +32,11 @@ class Board:
 
 
     def setPieceAt(self, x, y, piece):
-        self.spaces[x][y].piece = piece
+        self.spaces[int(x)][int(y)].piece = piece
 
+    def clearPieceAt(self, x, y):
+        self.spaces[int(x)][int(y)].piece = Piece()
+    
     def getPieceAt(self, x, y):
         return self.spaces[int(x)][int(y)].piece
 
@@ -165,7 +168,7 @@ class Board:
                     matchingOnColor = 'green'
 
                 pieceColor = 'white'
-                if self.spaces[k][i].piece.alliance != 'white':
+                if self.spaces[k][i].piece and self.spaces[k][i].piece.alliance != 'white':
                     pieceColor = 'black'
 #                print(colored(self.spaces[k][i].tostring(), pieceColor), end='')
                 self.printPiece(self.spaces[k][i].piece, pieceColor, onColor, matchingOnColor)

@@ -25,7 +25,6 @@ def processMove(move):
             return Actions.ILLEGAL
         # Check destination to see if it is an enemy piece    
     
-    returnedPiece = chessBoard.getPieceAt(coordinateDest[0], coordinateDest[1])
     movingPiece = chessBoard.getPieceAt(coordinate[0], coordinate[1])
     if movingPiece.alliance.lower() != currentMove.lower():
         if (movingPiece.alliance.lower() == 'white'):
@@ -34,10 +33,16 @@ def processMove(move):
         else:
             print('It is not Black\'s turn...')
             return Actions.ILLEGAL
+    
     # Capture enemy piece
+    returnedPiece = chessBoard.getPieceAt(coordinateDest[0], coordinateDest[1])
     if returnedPiece.alliance and returnedPiece.alliance.lower() != currentMove.lower():
-        print('Piece is an enemy and map attack')
+        print('Piece is an enemy and may attack')
+        capturedPieces.append(returnedPiece)
+        chessBoard.clearPieceAt(coordinate[0], coordinate[1])
+        chessBoard.setPieceAt(coordinateDest[0], coordinateDest[1], movingPiece)
         return Actions.CAPTURE
+    
     return Actions.MOVE
 
 #print('The coordinate ' + coordinate)
@@ -75,7 +80,7 @@ if __name__ == '__main__':
             chessBoard = Board()
             chessBoard.setupPiecesInitial()
             chessBoard.printColorfulBoard()
-    
+            capturedPieces = []
             while not quitGame and (not whiteWinner and not blackWinner):
                 command = input(currentMove + '\'s move: ')
                 if command.startswith('lookup'):
